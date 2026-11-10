@@ -8,6 +8,10 @@ Implementar una red simulada con dos routers Cisco y un equipo de conmutación C
 
 ![Diagrama de la topología](imagenes/topologia.svg)
 
+**Topología implementada en GNS3:** R2 → R1 → SW1, con PC1 y Cloud1 conectados al switch. Cloud1 enlaza la LAN con las máquinas virtuales de VMware.
+
+![Topología final funcionando en GNS3](imagenes/Topologia_GNS3_final.png)
+
 | Equipo | Dirección | Función |
 |---|---|---|
 | R1, Fa0/0 | `10.7.63.1/24` | Enlace LAN, servidor DHCP y comunidad SNMP de solo lectura |
@@ -81,6 +85,12 @@ R1 ejecuta el pool `LAN-PARCIAL` para `10.7.63.0/24`, con puerta de enlace `10.7
 ## 7. Active Directory y NPS (RADIUS)
 
 En Windows Server se usó el dominio `lab.local` con tres grupos de seguridad (`NIVEL_0`, `NIVEL_5` y `NIVEL_10`) y usuarios individuales de prueba. NPS autorizó acceso administrativo por RADIUS enviando los atributos Cisco-AVPair `shell:priv-lvl=0`, `shell:priv-lvl=5` y `shell:priv-lvl=10`.
+
+**Configuración NPS verificada:** las directivas `POLITICA_NIVEL_0`, `POLITICA_NIVEL_5` y `POLITICA_NIVEL_10` están habilitadas y conceden acceso. Los clientes RADIUS `R1` (`10.7.63.1`) y `SW1` (`10.7.63.2`) figuran habilitados como dispositivos Cisco.
+
+![NPS: las tres directivas de acceso por niveles](imagenes/NPS_politicas_niveles.png)
+
+![NPS: clientes RADIUS R1 y SW1 registrados y habilitados](imagenes/NPS_clientes_RADIUS_R1_SW1.png)
 
 Se comprobó expresamente en las sesiones SSH que **usuario5 obtuvo nivel 5** y **usuario10 obtuvo nivel 10** en R1 y SW1. Para **usuario0** se observó un conjunto reducido de comandos y la imposibilidad de ejecutar `show privilege`, coherente con privilegio 0; esa salida por sí sola no declara el número exacto.
 
