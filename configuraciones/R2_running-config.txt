@@ -1,0 +1,83 @@
+version 12.4
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+logging buffered 8192 debugging
+enable secret 5 <HASH_OCULTO>
+!
+no aaa new-model
+memory-size iomem 5
+no ip source-route
+no ip icmp rate-limit unreachable
+ip cef
+!
+ip auth-proxy max-nodata-conns 3
+ip admission max-nodata-conns 3
+!
+no ip domain lookup
+ip domain name parcial.local
+!
+username adminlab privilege 15 secret 5 <HASH_OCULTO>
+!
+ip tcp synwait-time 5
+ip ssh time-out 60
+ip ssh version 2
+!
+interface Loopback0
+ description RED-DE-PRUEBA-OSPF
+ ip address 10.7.65.1 255.255.255.255
+!
+interface FastEthernet0/0
+ description ENLACE-HACIA-R1
+ ip address 10.7.64.2 255.255.255.252
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 7 <CLAVE_OSPF_OCULTA>
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+router ospf 1
+ router-id 2.2.2.2
+ log-adjacency-changes
+ network 10.7.64.0 0.0.0.3 area 0
+ network 10.7.65.1 0.0.0.0 area 0
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+no cdp log mismatch duplex
+!
+control-plane
+!
+banner motd ^CACCESO RESTRINGIDO - SOLO PERSONAL AUTORIZADO^C
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ login local
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ exec-timeout 5 0
+ login local
+ transport input ssh
+!
+end

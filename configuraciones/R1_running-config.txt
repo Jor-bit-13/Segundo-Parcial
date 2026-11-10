@@ -1,0 +1,103 @@
+version 12.4
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+logging buffered 8192 debugging
+enable secret 5 <HASH_OCULTO>
+!
+aaa new-model
+!
+aaa authentication login CONSOLA_LOCAL local
+aaa authentication login ACCESO_RADIUS group radius local
+aaa authorization exec ACCESO_RADIUS group radius local
+!
+aaa session-id common
+memory-size iomem 5
+no ip source-route
+no ip icmp rate-limit unreachable
+ip cef
+!
+ip auth-proxy max-nodata-conns 3
+ip admission max-nodata-conns 3
+no ip dhcp use vrf connected
+ip dhcp excluded-address 10.7.63.1 10.7.63.99
+ip dhcp excluded-address 10.7.63.254
+!
+ip dhcp pool LAN-PARCIAL
+ network 10.7.63.0 255.255.255.0
+ default-router 10.7.63.1
+ dns-server 10.7.63.10
+!
+no ip domain lookup
+ip domain name parcial.local
+!
+username adminlab privilege 15 secret 5 <HASH_OCULTO>
+!
+ip tcp synwait-time 5
+ip ssh time-out 60
+ip ssh version 2
+!
+interface FastEthernet0/0
+ description LAN-HACIA-SW1
+ ip address 10.7.63.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ description ENLACE-HACIA-R2
+ ip address 10.7.64.1 255.255.255.252
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 7 <CLAVE_OSPF_OCULTA>
+ duplex auto
+ speed auto
+!
+router ospf 1
+ router-id 1.1.1.1
+ log-adjacency-changes
+ passive-interface FastEthernet0/0
+ network 10.7.63.0 0.0.0.255 area 0
+ network 10.7.64.0 0.0.0.3 area 0
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip radius source-interface FastEthernet0/0
+access-list 15 permit 10.7.63.0 0.0.0.255
+snmp-server community <COMUNIDAD_SNMP_OCULTA> RO 15
+snmp-server location LAB-PARCIAL-R1
+snmp-server contact Administrador
+no cdp log mismatch duplex
+!
+radius-server host 10.7.63.10 auth-port 1812 acct-port 1813 key 7 <CLAVE_RADIUS_OCULTA>
+radius-server vsa send authentication
+!
+control-plane
+!
+banner motd ^CACCESO RESTRINGIDO - SOLO PERSONAL AUTORIZADO^C
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ login authentication CONSOLA_LOCAL
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ exec-timeout 5 0
+ authorization exec ACCESO_RADIUS
+ login authentication ACCESO_RADIUS
+ transport input ssh
+!
+end

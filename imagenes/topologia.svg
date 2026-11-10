@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+<rect width="1200" height="650" fill="#f7f9fc"/>
+<style>.h{font:700 30px Arial,sans-serif;fill:#122f4a}.t{font:700 21px Arial,sans-serif;fill:#152f48}.s{font:16px Arial,sans-serif;fill:#264762}.c{font:13px Arial,sans-serif;fill:#566b7b}.l{stroke:#356f9a;stroke-width:4;fill:none}.d{stroke:#8196a7;stroke-width:3;stroke-dasharray:8 7;fill:none}</style>
+<text class="h" x="600" y="45" text-anchor="middle">Parcial P2 · Seguridad de Redes · GNS3 / VMware</text>
+<rect x="425" y="75" width="350" height="96" rx="14" stroke="#477fa8" stroke-width="2" fill="#e0ecf6"/>
+<text class="t" x="600" y="112" text-anchor="middle">R2 · Cisco c2691</text>
+<text class="s" x="600" y="146" text-anchor="middle">Fa0/0: 10.7.64.2/30 · Lo0: 10.7.65.1</text>
+<path class="l" d="M600 171 V226"/>
+<text class="s" x="618" y="199">OSPF área 0 + MD5</text>
+<rect x="425" y="226" width="350" height="93" rx="14" stroke="#477fa8" stroke-width="2" fill="#e0ecf6"/>
+<text class="t" x="600" y="264" text-anchor="middle">R1 · Cisco c2691</text>
+<text class="s" x="600" y="296" text-anchor="middle">Fa0/0: 10.7.63.1/24 · DHCP + SNMP RO</text>
+<path class="l" d="M600 319 V376"/>
+<rect x="425" y="376" width="350" height="94" rx="14" stroke="#548b69" stroke-width="2" fill="#e1f2e8"/>
+<text class="t" x="600" y="413" text-anchor="middle">SW1 · c2691 + NM-16ESW</text>
+<text class="s" x="600" y="445" text-anchor="middle">VLAN 1: 10.7.63.2/24 · SSH + RADIUS</text>
+<path class="l" d="M480 470 V520 H155 V544"/>
+<path class="l" d="M695 470 V520 H970 V544"/>
+<text class="c" x="225" y="511">Fa1/1</text><text class="c" x="833" y="511">Fa1/2 · Cloud1 VMnet4</text>
+<rect x="36" y="544" width="238" height="70" rx="12" stroke="#9385ba" stroke-width="2" fill="#eeeafa"/>
+<text class="t" x="155" y="575" text-anchor="middle">PC1 · VPCS</text>
+<text class="s" x="155" y="599" text-anchor="middle">10.7.63.101 por DHCP</text>
+<rect x="808" y="544" width="330" height="70" rx="12" stroke="#a38c55" stroke-width="2" fill="#faf0dd"/>
+<text class="t" x="973" y="573" text-anchor="middle">VMnet4 (Cloud1)</text>
+<text class="s" x="973" y="598" text-anchor="middle">Windows 10.7.63.10 + Ubuntu</text>
+<path class="d" d="M970 614 V636"/>
+<text class="c" x="960" y="646" text-anchor="end">AD DS / NPS y SNMP</text>
+</svg>
